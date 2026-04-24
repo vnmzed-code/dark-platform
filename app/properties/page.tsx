@@ -181,11 +181,16 @@ export default function PropertiesPage() {
       </header>
 
       {/* Hero Section */}
-      <section className="bg-gradient-to-l from-slate-900 via-slate-800 to-slate-900 text-white py-16">
-        <div className="container mx-auto px-4 md:px-8 max-w-7xl">
+      <section className="bg-gradient-to-l from-slate-900 via-slate-800 to-slate-900 text-white py-16 relative overflow-hidden">
+        <div className="absolute inset-0 opacity-10" style={{
+          backgroundImage: `radial-gradient(circle at 2px 2px, white 1px, transparent 0)`,
+          backgroundSize: '40px 40px'
+        }}></div>
+        
+        <div className="container mx-auto px-4 md:px-8 relative z-10 max-w-7xl">
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 bg-amber-500/20 border border-amber-400/30 rounded-full px-4 py-2 mb-4">
-              <span className="text-sm font-bold text-amber-300">✨ عروض سكنية موثوقة للأساتذة الجامعيين</span>
+              <span className="text-sm font-bold text-amber-300">✨ عقارات مختارة بعناية</span>
             </div>
             <h2 className="text-4xl md:text-5xl font-black mb-4">
               اكتشف أفضل العروض السكنية في الجزائر
@@ -193,6 +198,22 @@ export default function PropertiesPage() {
             <p className="text-xl text-slate-300 leading-relaxed">
               نقدم لك قائمة شاملة من الشقق والفيلات المخصصة للأساتذة الجامعيين عبر أكبر الولايات الجزائرية
             </p>
+            
+            {/* Stats */}
+            <div className="grid grid-cols-3 gap-6 mt-8 max-w-2xl">
+              <div>
+                <div className="text-3xl font-black text-amber-400">{properties.length}+</div>
+                <div className="text-sm text-slate-400 mt-1">عقار متاح</div>
+              </div>
+              <div>
+                <div className="text-3xl font-black text-amber-400">{cities.filter(c => c !== 'all').length}</div>
+                <div className="text-sm text-slate-400 mt-1">ولاية</div>
+              </div>
+              <div>
+                <div className="text-3xl font-black text-amber-400">98%</div>
+                <div className="text-sm text-slate-400 mt-1">رضا العملاء</div>
+              </div>
+            </div>
           </div>
         </div>
       </section>
@@ -267,87 +288,89 @@ export default function PropertiesPage() {
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {filteredProperties.map((property) => (
-                <div
-                  key={property.id}
-                  className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border-2 border-slate-100 hover:border-amber-200"
-                >
-                  {/* Image */}
-                  <div className="relative h-48 overflow-hidden bg-slate-200">
-                    <img
-                      src={property.image}
-                      alt={property.title}
-                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                    />
-                    <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold">
-                      {property.type === 'apartment' && '🏢 شقة'}
-                      {property.type === 'studio' && '🏠 استوديو'}
-                      {property.type === 'residence' && '🏛️ إقامة'}
-                      {property.type === 'villa' && '🏡 فيلا'}
-                    </div>
-                  </div>
-
-                  {/* Content */}
-                  <div className="p-5 space-y-3">
-                    {/* Title */}
-                    <h3 className="text-lg font-black text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-2">
-                      {property.title}
-                    </h3>
-
-                    {/* Location */}
-                    <div className="space-y-1">
-                      <div className="flex items-center gap-2 text-slate-600 text-sm">
-                        <span>📍</span>
-                        <span className="font-bold">{property.city}</span>
-                      </div>
-                      <div className="flex items-center gap-2 text-slate-600 text-sm">
-                        <span>🏘️</span>
-                        <span>{property.location}</span>
+                <Link key={property.id} href={`/properties/${property.id}`}>
+                  <div className="bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-300 overflow-hidden group border-2 border-slate-100 hover:border-amber-200 cursor-pointer h-full">
+                    {/* Image */}
+                    <div className="relative h-48 overflow-hidden bg-slate-200">
+                      <img
+                        src={property.image}
+                        alt={property.title}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
+                      />
+                      <div className="absolute top-3 left-3 bg-slate-900/80 backdrop-blur-sm text-white px-3 py-1 rounded-full text-xs font-bold">
+                        {property.type === 'apartment' && '🏢 شقة'}
+                        {property.type === 'studio' && '🏠 استوديو'}
+                        {property.type === 'residence' && '🏛️ إقامة'}
+                        {property.type === 'villa' && '🏡 فيلا'}
                       </div>
                     </div>
 
-                    {/* Details */}
-                    <div className="flex gap-3 text-xs text-slate-600 py-2 border-y border-slate-100">
-                      <div className="flex-1 text-center">
-                        <div className="text-slate-500">م²</div>
-                        <div className="font-bold text-slate-900">{property.area}</div>
-                      </div>
-                      <div className="flex-1 text-center">
-                        <div className="text-slate-500">غرف</div>
-                        <div className="font-bold text-slate-900">{property.bedrooms}</div>
-                      </div>
-                      <div className="flex-1 text-center">
-                        <div className="text-slate-500">حمامات</div>
-                        <div className="font-bold text-slate-900">{property.bathrooms}</div>
-                      </div>
-                    </div>
+                    {/* Content */}
+                    <div className="p-5 space-y-3 flex flex-col h-full">
+                      {/* Title */}
+                      <h3 className="text-lg font-black text-slate-900 group-hover:text-amber-600 transition-colors line-clamp-2">
+                        {property.title}
+                      </h3>
 
-                    {/* Features */}
-                    <div className="bg-slate-50 rounded-lg p-3 space-y-1">
-                      {property.features.slice(0, 2).map((feature, idx) => (
-                        <div key={idx} className="flex items-center gap-2 text-xs text-slate-700">
-                          <span className="text-amber-600">✓</span>
-                          <span>{feature}</span>
+                      {/* Location */}
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2 text-slate-600 text-sm">
+                          <span>📍</span>
+                          <span className="font-bold">{property.city}</span>
                         </div>
-                      ))}
-                    </div>
+                        <div className="flex items-center gap-2 text-slate-600 text-sm">
+                          <span>🏘️</span>
+                          <span>{property.location}</span>
+                        </div>
+                      </div>
 
-                    {/* Price */}
-                    <div className="flex items-baseline gap-1">
-                      <span className="text-2xl font-black text-amber-600">
-                        {property.price.toLocaleString('ar-DZ')}
-                      </span>
-                      <span className="text-slate-600 text-xs font-semibold">دج/شهر</span>
-                    </div>
+                      {/* Details */}
+                      <div className="flex gap-3 text-xs text-slate-600 py-2 border-y border-slate-100">
+                        <div className="flex-1 text-center">
+                          <div className="text-slate-500">م²</div>
+                          <div className="font-bold text-slate-900">{property.area}</div>
+                        </div>
+                        <div className="flex-1 text-center">
+                          <div className="text-slate-500">غرف</div>
+                          <div className="font-bold text-slate-900">{property.bedrooms}</div>
+                        </div>
+                        <div className="flex-1 text-center">
+                          <div className="text-slate-500">حمامات</div>
+                          <div className="font-bold text-slate-900">{property.bathrooms}</div>
+                        </div>
+                      </div>
 
-                    {/* CTA Button */}
-                    <button
-                      onClick={() => alert(`تم اختيار: ${property.title}\nالسعر: ${property.price.toLocaleString('ar-DZ')} دج/شهر`)}
-                      className="w-full bg-gradient-to-l from-slate-800 to-slate-900 hover:from-amber-600 hover:to-yellow-600 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
-                    >
-                      تقديم طلب
-                    </button>
+                      {/* Features */}
+                      <div className="bg-slate-50 rounded-lg p-2 space-y-1 flex-grow">
+                        {property.features.slice(0, 2).map((feature, idx) => (
+                          <div key={idx} className="flex items-center gap-2 text-xs text-slate-700">
+                            <span className="text-amber-600">✓</span>
+                            <span>{feature}</span>
+                          </div>
+                        ))}
+                      </div>
+
+                      {/* Price */}
+                      <div className="flex items-baseline gap-1 mt-auto">
+                        <span className="text-2xl font-black text-amber-600">
+                          {property.price.toLocaleString('ar-DZ')}
+                        </span>
+                        <span className="text-slate-600 text-xs font-semibold">دج/شهر</span>
+                      </div>
+
+                      {/* CTA Button */}
+                      <button
+                        onClick={(e) => {
+                          e.preventDefault();
+                          alert(`تم اختيار: ${property.title}\nالسعر: ${property.price.toLocaleString('ar-DZ')} دج/شهر`);
+                        }}
+                        className="w-full bg-gradient-to-l from-slate-800 to-slate-900 hover:from-amber-600 hover:to-yellow-600 text-white font-bold py-3 rounded-lg shadow-md hover:shadow-xl transition-all duration-300"
+                      >
+                        عرض التفاصيل
+                      </button>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           )}
